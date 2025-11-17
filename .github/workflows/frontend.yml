@@ -19,59 +19,22 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd frontend
+          cd hospital-frontend-main
           npm install
 
       - name: Build project
         run: |
-          cd frontend
+          cd hospital-frontend-main
           npm run build
 
-      # ------------------------------
-      # Choose one of the deployment methods below!
-      # ------------------------------
-
-      # --- (A) Deploy to GitHub Pages ---
-      # - name: Deploy to GitHub Pages
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: ./frontend/dist  # or build/
-
-      # --- (B) Deploy to Netlify ---
-      # - name: Deploy to Netlify
-      #   uses: netlify/actions/cli@master
-      #   with:
-      #     args: deploy --prod --dir=./frontend/dist
-      #   env:
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-      # --- (C) Deploy to Vercel ---
-      # - name: Deploy to Vercel
-      #   uses: amondnet/vercel-action@v20
-      #   with:
-      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-      #     working-directory: ./frontend
-
-      # --- (D) Deploy to Firebase Hosting ---
-      # - name: Deploy to Firebase
-      #   uses: w9jds/firebase-action@v2.2.0
-      #   with:
-      #     args: deploy
-      #   env:
-      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
       # --- (E) Deploy to AWS S3 ---
-      # - name: Sync to S3 Bucket
-      #   uses: jakejarvis/s3-sync-action@master
-      #   with:
-      #     args: --delete
-      #   env:
-      #     AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_REGION: "us-east-1"
-      #     SOURCE_DIR: "./frontend/dist"
+      - name: Sync to S3 Bucket
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1"
+          SOURCE_DIR: "./hospital-frontend-main/dist"
